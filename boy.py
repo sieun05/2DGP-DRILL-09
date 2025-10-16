@@ -3,6 +3,8 @@ from sdl2 import SDL_KEYDOWN, SDLK_SPACE, SDLK_RIGHT, SDL_KEYUP, SDLK_LEFT
 
 from state_machine import StateMachine
 
+#clip_composite_draw
+
 class Sleep:
 
     def __init__(self, boy):
@@ -19,9 +21,9 @@ class Sleep:
 
     def draw(self):
         if self.boy.face_dir == 1: # right
-            self.boy.image.clip_draw(self.boy.frame * 100, 300, 100, 100, self.boy.x, self.boy.y)
+            self.boy.image.clip_composite_draw(self.boy.frame * 100, 300, 100, 100, 3.141592/2, '', self.boy.x-25, self.boy.y-25, 100, 100)
         else: # face_dir == -1: # left
-            self.boy.image.clip_draw(self.boy.frame * 100, 200, 100, 100, self.boy.x, self.boy.y)
+            self.boy.image.clip_composite_draw(self.boy.frame * 100, 200, 100, 100, -3.141592/2, '', self.boy.x+25, self.boy.y-25, 100, 100)
 
 
 class Idle:
@@ -54,7 +56,9 @@ class Boy:
         self.image = load_image('animation_sheet.png')
 
         self.IDLE = Idle(self)
-        self.state_machine = StateMachine(self.IDLE)
+        self.SLEEP = Sleep(self)
+        #self.state_machine = StateMachine(self.IDLE)
+        self.state_machine = StateMachine(self.SLEEP)
 
     def update(self):
         self.state_machine.update()
