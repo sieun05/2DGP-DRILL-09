@@ -6,6 +6,9 @@ from state_machine import StateMachine
 #이벤트 체크 함수
 def space_down(e):      #e가 space key input인가를 확인. T/F return
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_SPACE
+def time_out(e):        #외부 이벤트 --- idle state에서 5초가 지났는지 확인해야한다.
+    return e[0] == 'TIME_OUT'
+
 
 class Sleep:
 
@@ -35,19 +38,23 @@ class Idle:
 
     def enter(self):
         self.boy.dir = 0
+        self.wait_start_time = get_time()
 
     def exit(self):
         pass
 
     def do(self):
         self.boy.frame = (self.boy.frame + 1) % 8
+        if get_time() - self.wait_start_time > 2:       #경과시간
+            #TIME_OUT 이벤트 발생
+            self.boy.state_machine.handle_state_event(('TIME_OUT', 0))
+
 
     def draw(self):
         if self.boy.face_dir == 1: # right
             self.boy.image.clip_draw(self.boy.frame * 100, 300, 100, 100, self.boy.x, self.boy.y)
         else: # face_dir == -1: # left
             self.boy.image.clip_draw(self.boy.frame * 100, 200, 100, 100, self.boy.x, self.boy.y)
-
 
 class Boy:
     def __init__(self):
@@ -61,10 +68,10 @@ class Boy:
         self.SLEEP = Sleep(self)
         #self.state_machine = StateMachine(self.IDLE)
         self.state_machine = StateMachine(
-            self.SLEEP,     #초기상태
+            self.IDLE,     #초기상태
             {       #상태 다이어그램을 딕셔너리 형태로 표현
                 self.SLEEP: {space_down: self.IDLE},
-                self.IDLE: {}
+                self.IDLE: {time_out: self.SLEEP}       #TimeOut 이벤트
             }
         )
 

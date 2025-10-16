@@ -19,7 +19,6 @@ def handle_events():
             boy.handle_event(event) #boy가 event를 처리하도록 위임
 
 
-
 def reset_world():
     global world
     global boy
@@ -31,7 +30,6 @@ def reset_world():
 
     boy = Boy()
     world.append(boy)
-
 
 
 def update_world():
@@ -48,7 +46,6 @@ def render_world():
 
 
 running = True
-
 
 
 open_canvas()
