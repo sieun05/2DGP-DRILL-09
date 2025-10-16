@@ -3,7 +3,9 @@ from sdl2 import SDL_KEYDOWN, SDLK_SPACE, SDLK_RIGHT, SDL_KEYUP, SDLK_LEFT
 
 from state_machine import StateMachine
 
-#clip_composite_draw
+#이벤트 체크 함수
+def space_down(e):      #e가 space key input인가를 확인. T/F return
+    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_SPACE
 
 class Sleep:
 
@@ -58,7 +60,13 @@ class Boy:
         self.IDLE = Idle(self)
         self.SLEEP = Sleep(self)
         #self.state_machine = StateMachine(self.IDLE)
-        self.state_machine = StateMachine(self.SLEEP)
+        self.state_machine = StateMachine(
+            self.SLEEP,     #초기상태
+            {       #상태 다이어그램을 딕셔너리 형태로 표현
+                self.SLEEP: {space_down: self.IDLE},
+                self.IDLE: {}
+            }
+        )
 
     def update(self):
         self.state_machine.update()
@@ -68,5 +76,9 @@ class Boy:
         self.state_machine.draw()
 
     def handle_event(self, event):
-        pass
-       
+        # state_machine에게 적합한 event를 만들어서 넘겨주는 것이 좋다.
+        # 상태 이벤트와 get_events를 통해 얻는 입력이벤트와는 다르다.
+        # 튜플을 이용하여 상태이벤트를 나타내도록 함 (PPT)
+
+        self.state_machine.handle_state_event(('INPUT', event))
+
