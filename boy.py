@@ -24,10 +24,10 @@ class Run:
         self.boy = boy
 
     def enter(self, e):        #enter시점에 오른쪽/왼쪽 결정해야함
-        if right_down(e):
-            self.boy.dir = 1
-        elif left_down(e):
-            self.boy.dir = -1
+        if right_down(e) or left_up(e):
+            self.boy.dir = self.boy.face_dir = 1
+        elif left_down(e) or right_up(e):
+            self.boy.dir = self.boy.face_dir = -1
 
     def exit(self, e):
         pass
@@ -104,8 +104,8 @@ class Boy:
             self.IDLE,     #초기상태
             {       #상태 다이어그램을 딕셔너리 형태로 표현
                 self.SLEEP: {space_down: self.IDLE},
-                self.IDLE: {left_down: self.RUN, right_down: self.RUN, time_out: self.SLEEP},     #TimeOut 이벤트
-                self.RUN: {left_up: self.IDLE, right_up: self.IDLE}
+                self.IDLE: {left_up: self.RUN, right_up: self.RUN, left_down: self.RUN, right_down: self.RUN, time_out: self.SLEEP},     #TimeOut 이벤트
+                self.RUN: {right_down: self.IDLE, left_down: self.IDLE, left_up: self.IDLE, right_up: self.IDLE}
             }
         )
 
