@@ -9,6 +9,26 @@ def space_down(e):      #e가 space key input인가를 확인. T/F return
 def time_out(e):        #외부 이벤트 --- idle state에서 5초가 지났는지 확인해야한다.
     return e[0] == 'TIME_OUT'
 
+class Run:
+    def __init__(self, boy):
+        self.boy = boy
+
+    def enter(self):
+        self.boy.dir = 1
+
+    def exit(self):
+        pass
+
+    def do(self):
+        self.boy.frame = (self.boy.frame + 1) % 8
+        self.boy.x += self.boy.dir * 5
+
+    def draw(self):
+        if self.boy.face_dir == 1: # right
+            self.boy.image.clip_draw(self.boy.frame * 100, 100, 100, 100, self.boy.x, self.boy.y)
+        else: # face_dir == -1: # left
+            self.boy.image.clip_draw(self.boy.frame * 100, 0, 100, 100, self.boy.x, self.boy.y)
+
 
 class Sleep:
 
