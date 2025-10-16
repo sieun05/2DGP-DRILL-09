@@ -13,7 +13,7 @@ class StateMachine:
         self.cur_state.draw()
 
     #Sleep <--> Idle
-    def handle_state_event(self, state_event):
+    def handle_state_event(self, state_event):      #상태를 추가하고 이벤트를 처리하는 코드만 작성하면 되고 해당 함수는 건드리지 않아도 된다.
         #if로 처리하기보다 더 효과적인 상태변환규칙테이블 등을 만들어 처리한다.
         #dictionary, 2D array, ...
 
