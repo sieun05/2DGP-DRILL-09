@@ -23,10 +23,13 @@ class Run:
     def __init__(self, boy):
         self.boy = boy
 
-    def enter(self):
-        self.boy.dir = 1
+    def enter(self, e):        #enter시점에 오른쪽/왼쪽 결정해야함
+        if right_down(e):
+            self.boy.dir = 1
+        elif left_down(e):
+            self.boy.dir = -1
 
-    def exit(self):
+    def exit(self, e):
         pass
 
     def do(self):
@@ -45,10 +48,10 @@ class Sleep:
     def __init__(self, boy):
         self.boy = boy
 
-    def enter(self):
+    def enter(self, e):
         self.boy.dir = 0
 
-    def exit(self):
+    def exit(self, e):
         pass
 
     def do(self):
@@ -66,19 +69,18 @@ class Idle:
     def __init__(self, boy):
         self.boy = boy
 
-    def enter(self):
+    def enter(self, e):
         self.boy.dir = 0
         self.wait_start_time = get_time()
 
-    def exit(self):
+    def exit(self, e):
         pass
 
     def do(self):
         self.boy.frame = (self.boy.frame + 1) % 8
-        if get_time() - self.wait_start_time > 2:       #경과시간
+        if get_time() - self.wait_start_time > 1000.0:       #경과시간
             #TIME_OUT 이벤트 발생
             self.boy.state_machine.handle_state_event(('TIME_OUT', 0))
-
 
     def draw(self):
         if self.boy.face_dir == 1: # right
@@ -99,11 +101,11 @@ class Boy:
         self.RUN = Run(self)
         #self.state_machine = StateMachine(self.IDLE)
         self.state_machine = StateMachine(
-            self.RUN,     #초기상태
+            self.IDLE,     #초기상태
             {       #상태 다이어그램을 딕셔너리 형태로 표현
                 self.SLEEP: {space_down: self.IDLE},
-                self.IDLE: {time_out: self.SLEEP},     #TimeOut 이벤트
-                self.RUN: {}
+                self.IDLE: {left_down: self.RUN, right_down: self.RUN, time_out: self.SLEEP},     #TimeOut 이벤트
+                self.RUN: {left_up: self.IDLE, right_up: self.IDLE}
             }
         )
 

@@ -4,7 +4,7 @@ class StateMachine:
     def __init__(self, start_state, rules):     #rules: {state: {event:state}}
         self.cur_state = start_state
         self.rules = rules
-        self.cur_state.enter()
+        self.cur_state.enter(('START', 0))   #인터페이스를 맞추기 위해 더미이벤트 넘겨줌
 
     def update(self):
         self.cur_state.do()
@@ -22,8 +22,8 @@ class StateMachine:
         for check_event in self.rules[self.cur_state].keys():   #[space_down]
             if check_event(state_event):        #만약 True라면
                 self.next_state = self.rules[self.cur_state][check_event]   #상태변화 next == IDLE
-                self.cur_state.exit()
-                self.next_state.enter()
+                self.cur_state.exit(state_event)
+                self.next_state.enter(state_event)
 
                 #디버그 용도
                 #현재 상태가 어떤 이벤트에 의해 다음 상태로 바뀌었는지 정보를 표시한다.
