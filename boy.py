@@ -9,6 +9,16 @@ def space_down(e):      #e가 space key input인가를 확인. T/F return
 def time_out(e):        #외부 이벤트 --- idle state에서 5초가 지났는지 확인해야한다.
     return e[0] == 'TIME_OUT'
 
+#이벤트 체크 - 방향키
+def right_down(e):
+    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_RIGHT
+def left_down(e):
+    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_LEFT
+def right_up(e):
+    return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_RIGHT
+def left_up(e):
+    return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_LEFT
+
 class Run:
     def __init__(self, boy):
         self.boy = boy
