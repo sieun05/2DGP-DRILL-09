@@ -21,7 +21,12 @@ class StateMachine:
 
         for check_event in self.rules[self.cur_state].keys():   #[space_down]
             if check_event(state_event):        #만약 True라면
-                next_state = self.rules[self.cur_state][check_event]   #상태변화 next == IDLE
+                self.next_state = self.rules[self.cur_state][check_event]   #상태변화 next == IDLE
                 self.cur_state.exit()
-                next_state.enter()
-                self.cur_state = next_state
+                self.next_state.enter()
+
+                #디버그 용도
+                #현재 상태가 어떤 이벤트에 의해 다음 상태로 바뀌었는지 정보를 표시한다.
+                print(f'{self.cur_state.__class__.__name__} ==== {event_to_string(state_event)} ====> {self.next_state.__class__.__name__}')
+
+                self.cur_state = self.next_state
