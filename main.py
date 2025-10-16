@@ -15,6 +15,8 @@ def handle_events():
             running = False
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             running = False
+        else:
+            boy.handle_event(event) #boy가 event를 처리하도록 위임
 
 
 

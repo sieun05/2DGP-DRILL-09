@@ -66,3 +66,7 @@ class Boy:
 
     def draw(self):
         self.state_machine.draw()
+
+    def handle_event(self, event):
+        pass
+       
