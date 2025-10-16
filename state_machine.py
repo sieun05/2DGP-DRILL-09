@@ -19,5 +19,9 @@ class StateMachine:
 
         #조건은 함수로 체크
 
-        pass
-
+        for check_event in self.rules[self.cur_state].keys():   #[space_down]
+            if check_event(state_event):        #만약 True라면
+                next_state = self.rules[self.cur_state][check_event]   #상태변화 next == IDLE
+                self.cur_state.exit()
+                next_state.enter()
+                self.cur_state = next_state
