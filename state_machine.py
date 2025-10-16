@@ -30,3 +30,4 @@ class StateMachine:
                 print(f'{self.cur_state.__class__.__name__} ==== {event_to_string(state_event)} ====> {self.next_state.__class__.__name__}')
 
                 self.cur_state = self.next_state
+                return      #한 번의 상태변화가 끝나면 더 이상 함수를 진행할 필요가 없다.
