@@ -31,3 +31,7 @@ class StateMachine:
 
                 self.cur_state = self.next_state
                 return      #한 번의 상태변화가 끝나면 더 이상 함수를 진행할 필요가 없다.
+
+            #만약 for문을 다 돌았는데도 상태변화가 일어나지 않았다면
+            #처리되지 않은 이벤트를 출력(디버깅 용도)
+            print(f'처리되지 않은 이벤트 {event_to_string(state_event)}가 있습니다.')
