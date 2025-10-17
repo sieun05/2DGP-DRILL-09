@@ -1,5 +1,5 @@
 from pico2d import load_image, get_time
-from sdl2 import SDL_KEYDOWN, SDLK_SPACE, SDLK_RIGHT, SDL_KEYUP, SDLK_LEFT
+from sdl2 import SDL_KEYDOWN, SDLK_SPACE, SDLK_RIGHT, SDL_KEYUP, SDLK_LEFT, SDLK_a
 
 from state_machine import StateMachine
 
@@ -20,7 +20,7 @@ def left_up(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_LEFT
 
 def a_down(e):
-    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == 'a'
+    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_a
 
 
 class AutoRun:
@@ -140,12 +140,12 @@ class Boy:
         self.AUTORUN = AutoRun(self)
         #self.state_machine = StateMachine(self.IDLE)
         self.state_machine = StateMachine(
-            self.AUTORUN,     #초기상태
+            self.IDLE,     #초기상태
             {       #상태 다이어그램을 딕셔너리 형태로 표현
-                self.SLEEP: {space_down: self.IDLE},
-                self.IDLE: {left_up: self.RUN, right_up: self.RUN, left_down: self.RUN, right_down: self.RUN, time_out: self.SLEEP},     #TimeOut 이벤트
-                self.RUN: {right_down: self.IDLE, left_down: self.IDLE, left_up: self.IDLE, right_up: self.IDLE},
-                self.AUTORUN: {}
+                self.SLEEP: {a_down: self.AUTORUN, space_down: self.IDLE},
+                self.IDLE: {a_down: self.AUTORUN, left_up: self.RUN, right_up: self.RUN, left_down: self.RUN, right_down: self.RUN, time_out: self.SLEEP},     #TimeOut 이벤트
+                self.RUN: {a_down: self.AUTORUN, right_down: self.IDLE, left_down: self.IDLE, left_up: self.IDLE, right_up: self.IDLE},
+                self.AUTORUN: {left_down: self.RUN, right_down: self.RUN, time_out: self.IDLE},
             }
         )
 
@@ -162,4 +162,3 @@ class Boy:
         # 튜플을 이용하여 상태이벤트를 나타내도록 함 (PPT)
 
         self.state_machine.handle_state_event(('INPUT', event))
-
