@@ -19,6 +19,29 @@ def right_up(e):
 def left_up(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_LEFT
 
+class AutoRun:
+    def __init__(self, boy):
+        self.boy = boy
+
+    def enter(self, e):        #enter시점에 오른쪽/왼쪽 결정해야함
+        if right_down(e) or left_up(e):
+            self.boy.dir = self.boy.face_dir = 1
+        elif left_down(e) or right_up(e):
+            self.boy.dir = self.boy.face_dir = -1
+
+    def exit(self, e):
+        pass
+
+    def do(self):
+        self.boy.frame = (self.boy.frame + 1) % 8
+        self.boy.x += self.boy.dir * 10
+
+    def draw(self):
+        if self.boy.face_dir == 1: # right
+            self.boy.image.clip_draw(self.boy.frame * 100, 100, 150, 150, self.boy.x, self.boy.y)
+        else: # face_dir == -1: # left
+            self.boy.image.clip_draw(self.boy.frame * 100, 0, 150, 150, self.boy.x, self.boy.y)
+
 class Run:
     def __init__(self, boy):
         self.boy = boy
