@@ -29,6 +29,8 @@ class AutoRun:
         elif left_down(e) or right_up(e):
             self.boy.dir = self.boy.face_dir = -1
 
+        self.wait_start_time = get_time()
+
     def exit(self, e):
         pass
 
@@ -38,6 +40,10 @@ class AutoRun:
         if self.boy.x < 0 or self.boy.x > 800:
             self.boy.dir *= -1
             self.boy.face_dir *= -1
+
+        if get_time() - self.wait_start_time > 5:       #경과시간
+            #TIME_OUT 이벤트 발생
+            self.boy.state_machine.handle_state_event(('TIME_OUT', 0))
 
     def draw(self):
         if self.boy.face_dir == 1: # right
