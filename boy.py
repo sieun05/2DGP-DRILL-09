@@ -24,6 +24,8 @@ class AutoRun:
         self.boy = boy
 
     def enter(self, e):        #enter시점에 오른쪽/왼쪽 결정해야함
+        self.boy.dir = self.boy.face_dir = 1
+
         if right_down(e) or left_up(e):
             self.boy.dir = self.boy.face_dir = 1
         elif left_down(e) or right_up(e):
@@ -47,9 +49,9 @@ class AutoRun:
 
     def draw(self):
         if self.boy.face_dir == 1: # right
-            self.boy.image.clip_draw(self.boy.frame * 100, 100, 150, 150, self.boy.x, self.boy.y)
+            self.boy.image.clip_draw(self.boy.frame * 100, 100, 100, 100, self.boy.x, self.boy.y, 150, 150)
         else: # face_dir == -1: # left
-            self.boy.image.clip_draw(self.boy.frame * 100, 0, 150, 150, self.boy.x, self.boy.y)
+            self.boy.image.clip_draw(self.boy.frame * 100, 0, 100, 100, self.boy.x, self.boy.y, 150, 150)
 
 class Run:
     def __init__(self, boy):
