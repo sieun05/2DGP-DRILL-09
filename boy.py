@@ -131,13 +131,15 @@ class Boy:
         self.IDLE = Idle(self)
         self.SLEEP = Sleep(self)
         self.RUN = Run(self)
+        self.AUTORUN = AutoRun(self)
         #self.state_machine = StateMachine(self.IDLE)
         self.state_machine = StateMachine(
-            self.IDLE,     #초기상태
+            self.AUTORUN,     #초기상태
             {       #상태 다이어그램을 딕셔너리 형태로 표현
                 self.SLEEP: {space_down: self.IDLE},
                 self.IDLE: {left_up: self.RUN, right_up: self.RUN, left_down: self.RUN, right_down: self.RUN, time_out: self.SLEEP},     #TimeOut 이벤트
-                self.RUN: {right_down: self.IDLE, left_down: self.IDLE, left_up: self.IDLE, right_up: self.IDLE}
+                self.RUN: {right_down: self.IDLE, left_down: self.IDLE, left_up: self.IDLE, right_up: self.IDLE},
+                self.AUTORUN: {}
             }
         )
 
