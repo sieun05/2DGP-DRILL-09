@@ -28,12 +28,7 @@ class AutoRun:
         self.boy = boy
 
     def enter(self, e):        #enter시점에 오른쪽/왼쪽 결정해야함
-        self.boy.dir = self.boy.face_dir = 1
-
-        if right_down(e) or left_up(e):
-            self.boy.dir = self.boy.face_dir = 1
-        elif left_down(e) or right_up(e):
-            self.boy.dir = self.boy.face_dir = -1
+        self.boy.dir = self.boy.face_dir
 
         self.wait_start_time = get_time()
 
