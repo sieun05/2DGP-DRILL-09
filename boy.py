@@ -19,6 +19,10 @@ def right_up(e):
 def left_up(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_LEFT
 
+def a_down(e):
+    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == 'a'
+
+
 class AutoRun:
     def __init__(self, boy):
         self.boy = boy
